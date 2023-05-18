@@ -12,6 +12,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       id_carrera: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      id_profesor: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       createdAt: {

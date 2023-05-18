@@ -4,10 +4,13 @@ var models = require("../models");
 
 router.get("/", (req, res,next) => {
 
-  models.materia.findAll({attributes: ["id","nombre","id_carrera"],
+  models.materia.findAll({attributes: ["id","nombre","id_carrera", "id_profesor"],
       
       /////////se agrega la asociacion 
-      include:[{as:'Carrera-Relacionada', model:models.carrera, attributes: ["id","nombre"]}]
+      include:[
+        {as:'Carrera-Relacionada', model:models.carrera, attributes: ["id","nombre"]},
+        {as:'Profesor-Relacionado', model:models.profesor, attributes: ["id","nombre"]}
+      ]
       ////////////////////////////////
 
     }).then(materias => res.send(materias)).catch(error => { return next(error)});
@@ -17,7 +20,7 @@ router.get("/", (req, res,next) => {
 
 router.post("/", (req, res) => {
   models.materia
-    .create({ nombre: req.body.nombre,id_carrera:req.body.id_carrera })
+    .create({ nombre: req.body.nombre,id_carrera:req.body.id_carrera,id_profesor:req.body.id_profesor })
     .then(materia => res.status(201).send({ id: materia.id }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
@@ -33,8 +36,12 @@ router.post("/", (req, res) => {
 const findmateria = (id, { onSuccess, onNotFound, onError }) => {
   models.materia
     .findOne({
-      attributes: ["id", "nombre"],
-      where: { id }
+      attributes: ["id","nombre","id_carrera", "id_profesor"],
+      where: { id },
+      include:[
+        {as:'Carrera-Relacionada', model:models.carrera, attributes: ["id","nombre"]},
+        {as:'Profesor-Relacionado', model:models.profesor, attributes: ["id","nombre"]}
+      ]
     })
     .then(materia => (materia ? onSuccess(materia) : onNotFound()))
     .catch(() => onError());
@@ -51,7 +58,7 @@ router.get("/:id", (req, res) => {
 router.put("/:id", (req, res) => {
   const onSuccess = materia =>
     materia
-      .update({ nombre: req.body.nombre }, { fields: ["nombre"] })
+      .update({nombre: req.body.nombre,id_carrera:req.body.id_carrera,id_profesor:req.body.id_profesor}, { fields: ["nombre", "id_carrera", "id_profesor"] })
       .then(() => res.sendStatus(200))
       .catch(error => {
         if (error == "SequelizeUniqueConstraintError: Validation error") {
