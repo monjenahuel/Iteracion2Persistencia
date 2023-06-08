@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
+const { encrypt, compare } = require("../handlers/handlerBcryptjs.js");
+const { generateToken, verifyToken } = require("../handlers/handlerJWT.js");
 
 router.get("/", (req, res) => {
     models.usuario
@@ -29,27 +31,67 @@ router.get("/:id", (req, res) => {
     });
 });
 
-const validateUser = (email, password, { onSuccess, onNotFound, onError }) => {
-    models.usuario
-        .findOne({
-            attributes: ["id", "email"],
-            where: { email, password },
-        })
-        .then((usuario) => (usuario ? onSuccess(usuario) : onNotFound()))
-        .catch(() => onError());
+const validateUser = async (
+    email,
+    password,
+    { onSuccess, onIncorrectCredentials, onError }
+) => {
+    try {
+        let user = await models.usuario.findOne({
+            attributes: ["id", "email", "password"],
+            where: { email },
+        });
+
+        if (!user) onIncorrectCredentials();
+
+        let checkedPassword = await compare(password, user.password);
+
+        if (checkedPassword) {
+            let usuario = {
+                id: user.id,
+                email: user.email,
+                token: generateToken(user.id),
+            };
+            onSuccess(usuario);
+        } else {
+            onIncorrectCredentials();
+        }
+    } catch (error) {
+        onError();
+    }
 };
 
 router.post("/login", (req, res) => {
-    validateUser(req.body.email,req.body.password, {
+    validateUser(req.body.email, req.body.password, {
         onSuccess: (usuario) => res.send(usuario),
-        onNotFound: () => res.sendStatus(404),
+        onIncorrectCredentials: () =>
+            res.status(401).send("Credenciales invalidas"),
         onError: () => res.sendStatus(500),
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
+    //JWT Implemented
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({ error: "Token no encontrado" });
+    }
+
+    const decoded = verifyToken(token);
+
+    if (!decoded) {
+        return res.status(401).json({ error: "Token inválido" });
+    }
+
+    //Si el token es valido ->
+
+    let { email, password } = req.body;
+
+    password = await encrypt(password);
+
     models.usuario
-        .create({ email: req.body.email, password: req.body.password })
+        .create({ email: email, password: password })
         .then((usuario) => res.status(201).send({ id: usuario.id }))
         .catch((error) => {
             if (error == "SequelizeUniqueConstraintError: Validation error") {
