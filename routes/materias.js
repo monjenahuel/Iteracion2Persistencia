@@ -4,6 +4,7 @@ var models = require("../models");
 
 router.get("/", (req, res,next) => {
 
+
   models.materia.findAll({attributes: ["id","nombre","id_carrera", "id_profesor"],
       
       /////////se agrega la asociacion 
@@ -15,6 +16,8 @@ router.get("/", (req, res,next) => {
 
     }).then(materias => res.send(materias)).catch(error => { return next(error)});
 });
+
+
 
 
 

@@ -4,16 +4,32 @@ var models = require("../models");
 
 router.get("/", (req, res) => {
   
+
+  let { page = 1 , size = 5} = req.query;
+
+  /*Condicional para modificar el page cuando se ingresa un page = 0*/ 
+  page = page < 1 ? 1:page
+
+
   models.profesor
     .findAll({
       attributes: ["id", "nombre"],
       include:[
         {as:'materias', model:models.materia, attributes: ["id","nombre","id_carrera"]}
-      ]
+      ],
+      /*
+      Offset es la cantidad de registros a saltear
+      y limit la cantidad de registros a mostrar
+      */ 
+      offset:(+page-1) * (+size),
+      limit:+size
     })
     .then(profesors => res.send(profesors))
     .catch(() => res.sendStatus(500));
+
 });
+
+
 
 router.post("/", (req, res) => {
   models.profesor
