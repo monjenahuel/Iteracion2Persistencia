@@ -1,0 +1,12 @@
+[2023-06-26T23:23:23.153Z] error: Materia no encontrada
+[2023-06-26T23:23:36.535Z] info: Materia creada con exito ID: 5
+[2023-06-26T23:23:43.738Z] info: Materia creada con exito ID: 6
+[2023-06-26T23:23:51.852Z] info: Materia ID:6 actualizada
+[2023-06-26T23:23:59.727Z] info: Materia ID: 6 eliminada
+[2023-06-26T23:24:18.913Z] error: Error al acceder a las materias
+[2023-06-26T23:24:21.252Z] error: Error al acceder a la materia
+[2023-06-26T23:24:28.607Z] error: Error al intentar insertar en la base de datos: SequelizeConnectionRefusedError: connect ECONNREFUSED ::1:3306
+[2023-06-26T23:24:28.607Z] error: Error al intentar insertar en la base de datos: SequelizeConnectionRefusedError: connect ECONNREFUSED ::1:3306
+[2023-06-26T23:24:31.076Z] error: Error al intentar actualizar la base de datos
+[2023-06-26T23:24:32.810Z] error: Error al eliminar materia
+[2023-06-26T23:24:54.773Z] error: Error al eliminar materia

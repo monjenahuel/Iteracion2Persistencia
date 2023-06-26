@@ -4,7 +4,7 @@
     "password": "",
     "database": "api_v2",
     "host": "localhost",
-    "dialect": "mariadb",
-    "timezone":"America/Los_Angeles"
+    "dialect": "mysql",
+    "timezone":"Argentina/Buenos_Aires"
   }
 }
