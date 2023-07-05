@@ -78,4 +78,8 @@ router.delete("/:id", (req, res) => {
   });
 });
 
+router.delete("/"), (req,res) => {
+  return "Hola";
+}
+
 module.exports = router;

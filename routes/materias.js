@@ -100,38 +100,30 @@ router.put("/:id", (req, res) => {
   });
 });
 
-// router.delete("/:id", (req, res) => {
-//   const onSuccess = materia =>
-//     materia
-//       .destroy()
-//       .then(() => {
-//         logger.info(`Materia ID: ${materia.id} eliminada`)
-//         res.sendStatus(200)
-//       });
-//   findmateria(req.params.id, {
-//     onSuccess,
-//     onNotFound: () => {
-//       logger.error("Materia no encontrada")
-//       res.sendStatus(404)
-//     },
-//     onError: () => {
-//       logger.error(`Error al eliminar materia`)
-//       res.sendStatus(500)
-//     }
-//   });
-// });
+router.delete("/"), (req,res) => {
+  return "Hola";
+}
 
-// router.delete("/:id", (req, res) => {
-//   const onSuccess = materia =>
-//     materia
-//       .destroy()
-//       .then(() => res.sendStatus(200))
-//       .catch(() => res.sendStatus(500));
-//   findmateria(req.params.id, {
-//     onSuccess,
-//     onNotFound: () => res.sendStatus(404),
-//     onError: () => res.sendStatus(500)
-//   });
-// });
+router.delete("/:id", (req, res) => {
+  const onSuccess = materia =>
+    materia
+      .destroy()
+      .then(() => {
+        logger.info('Materia ID: ${materia.id} eliminada')
+        res.sendStatus(200)
+      });
+
+  findmateria(req.params.id, {
+    onSuccess,
+    onNotFound: () => {
+      logger.error("Materia no encontrada")
+      res.sendStatus(404)
+    },
+    onError: () => {
+      logger.error('Error al eliminar materia')
+      res.sendStatus(500)
+    }
+  });
+});
 
 module.exports = router;
