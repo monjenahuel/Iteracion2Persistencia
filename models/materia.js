@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const materia = sequelize.define('materia', {
     nombre: DataTypes.STRING,
@@ -21,8 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       targetKey: 'id',     // campo con el que voy a igualar
     })
   	/////////////////////
-
-
 
   };
   return materia;

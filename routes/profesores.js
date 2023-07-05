@@ -5,7 +5,7 @@ var models = require("../models");
 router.get("/", (req, res) => {
   
 
-  let { page = 1 , size = 5} = req.query;
+  let { page = 1 , size = 100} = req.query;
 
   /*Condicional para modificar el page cuando se ingresa un page = 0*/ 
   page = page < 1 ? 1:page

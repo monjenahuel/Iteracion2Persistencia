@@ -1,10 +1,13 @@
 # Iteracion2Persistencia
 
 Paginacion: En profesores
-JWT y Login: Usuarios (Separar en otro controlador)
-Logger: Transacciones de materias, logs guardados en archivo. Guardar en tabla?
+
+JWT y Login: Usuarios (JWT 2 puntos)
+
+Logger: Transacciones de materias, logs guardados en archivo
+
 Asociaciones Multiples: Materias y profesores M:M
+
 Swagger: Pendiente
 Test: Pendiente
-Refactorizacion: Pendiente?
-Docker: Agregar?
+
